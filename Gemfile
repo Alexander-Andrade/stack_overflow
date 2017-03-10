@@ -44,6 +44,7 @@ end
 
 group :test do
   gem 'shoulda-matchers'
+  gem 'rubocop', require: false
 end
 
 group :development do
