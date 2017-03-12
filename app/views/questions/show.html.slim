@@ -1,0 +1,12 @@
+.panel.panel-default
+  .panel-heading
+    = @question.title
+  .panel-body
+    p
+      = @question.body
+
+  - if @question.answers.any?
+    ul.list-group
+      = @question.answers.each do |answer|
+        = render answer
+

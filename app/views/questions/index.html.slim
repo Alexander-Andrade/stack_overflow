@@ -1,0 +1,5 @@
+.row
+ = link_to 'New question', new_question_path, class: 'btn btn-lg btn-primary question-new-btn'
+.row
+  .list-group.question-list
+    = render @questions
