@@ -1,0 +1,14 @@
+= render 'shared/flash_message'
+= link_to 'New Answer', { controller: 'answers', action: 'new', question_id: @question.id }, class:'btn btn-lg btn-primary'
+.panel.panel-default
+  .panel-heading
+    = @question.title
+  .panel-body
+    p
+      = @question.body
+
+  - if @question.answers.any?
+    ul.list-group
+      - @question.answers.each do |answer|
+        = render answer
+
