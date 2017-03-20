@@ -37,8 +37,7 @@ gem 'jbuilder', '~> 2.5'
 # gem 'capistrano-rails', group: :development
 
 gem 'slim-rails'
-# helps to create unique data for testing
-gem 'faker'
+gem 'devise'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -48,11 +47,15 @@ group :development, :test do
   gem 'factory_girl_rails'
   #pretty rails models in the console
   gem 'awesome_print', require:'ap'
+  # helps to create unique data for testing
+  gem 'faker'
 end
 
 group :test do
   gem 'shoulda-matchers'
   gem 'rubocop', require: false
+  gem 'capybara'
+  gem 'launchy'
 end
 
 group :development do
