@@ -10,7 +10,8 @@ class AnswersController < ApplicationController
       flash[:notice] = 'Your answer successfully created.'
       redirect_to @question
     else
-      render 'questions/show'
+      flash[:notice] = 'The answer is invalid.'
+      redirect_to @question
     end
   end
 

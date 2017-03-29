@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe Question, type: :model do
   context 'assotiations' do
     it { should have_many(:answers).dependent(:destroy) }
+    it { should belong_to(:user) }
   end
 
   context 'validations' do

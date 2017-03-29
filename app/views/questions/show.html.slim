@@ -4,7 +4,8 @@
   .panel-heading
     .panel-title
       = @question.title
-      span.pull-right = render(partial:'questions/actions_dropdown', locals:{question: @question})
+      - if current_user == @question.user
+        span.pull-right = render(partial:'questions/actions_dropdown', locals:{question: @question})
   .panel-body
     .row
       .col-xs-9
@@ -22,7 +23,7 @@
     tbody
       - if @question.answers.any?
         - @question.answers.each_with_index do |answer, i|
-          tr
+          tr.answer
             td width="5%" =i
             td width="60%" = answer.content
             - if current_user == answer.user
