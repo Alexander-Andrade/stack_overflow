@@ -10,16 +10,19 @@ class AnswersController < ApplicationController
       flash[:notice] = 'Your answer successfully created.'
       redirect_to @question
     else
-      flash[:notice] = 'The answer is invalid.'
+      flash[:error] = @answer.errors.full_messages.join(';')
       redirect_to @question
     end
   end
 
   def destroy
-    @question = @answer.question
-    @answer.destroy!
-    flash[:notice] = 'Your answer successfully deleted.'
-    redirect_to @question
+    if current_user.author_of? @answer
+      @answer.destroy!
+      flash[:notice] = 'Your answer successfully deleted.'
+    else
+      flash[:error] = 'Your could not delete another answer.'
+    end
+    redirect_to @answer.question
   end
 
   private

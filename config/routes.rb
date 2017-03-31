@@ -3,7 +3,6 @@ Rails.application.routes.draw do
   root 'questions#index'
 
   resources :questions, only: [:index, :show, :new, :create, :destroy] do
-    resources :answers, only: [:create]
+    resources :answers, only: [:create, :destroy], shallow: true
   end
-    resources :answers, only: [:destroy]
 end

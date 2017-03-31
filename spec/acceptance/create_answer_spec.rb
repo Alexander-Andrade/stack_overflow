@@ -17,6 +17,7 @@ feature 'User,while viewing the question, can write a response to it', %q{
     fill_in 'Text', with: 'Test Answer'
     click_on 'Create'
     expect(page).to have_content 'Your answer successfully created.'
+    expect(page).to have_content 'Test Answer'
   end
 
   scenario 'Authenticated user creates answer' do
@@ -36,7 +37,7 @@ feature 'User,while viewing the question, can write a response to it', %q{
 
     fill_in 'Text', with: ''
     click_on 'Create'
-    expect(page).to have_content 'The answer is invalid.'
+    expect(page).to have_content "Content can't be blank"
   end
 
   scenario 'Visitor(not user) wants to create answer' do

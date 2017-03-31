@@ -12,6 +12,7 @@ feature 'Browse question and its answer', %q{
   scenario 'Visitor browses question and its answers' do
     visit question_path(question)
     expect(page).to have_content question.title
+    expect(page).to have_content question.body
     answers.each do |a|
       expect(page).to have_content a.content
     end

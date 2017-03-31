@@ -1,10 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe QuestionsController, type: :controller do
-  let(:question) { create(:question) }
+  let(:user) { create(:user) }
+  let(:question) { create(:question, user: user) }
 
   describe 'GET #index' do
-    let(:questions) { create_list(:question, 2) }
+    let(:questions) { create_list(:question, 2, user: user) }
 
     before { get :index }
 
@@ -53,7 +54,13 @@ RSpec.describe QuestionsController, type: :controller do
         post :create, params: { question: attributes_for(:question) }
         expect(response).to redirect_to question_path(assigns(:question))
       end
+
+      it 'answer gets user, user is logged user' do
+        post :create, params: { question: attributes_for(:question) }
+        expect(question).to have_attributes(user: user)
+      end
     end
+
 
     context 'with invalid attributes' do
       it 'does not save the question' do

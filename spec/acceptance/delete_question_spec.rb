@@ -14,7 +14,13 @@ feature 'User can delete his own question', %q{
     sign_in(user)
 
     visit question_path(question)
+
+    expect(page).to have_content question.title
+    expect(page).to have_content question.body
+
     click_on 'Delete'
+    expect(page).to_not have_content question.title
+    expect(page).to_not have_content question.body
     expect(page).to have_content 'Your question successfully deleted.'
     expect(current_path).to eq questions_path
   end

@@ -4,8 +4,8 @@
   .panel-heading
     .panel-title
       = @question.title
-      - if current_user == @question.user
-        span.pull-right = render(partial:'questions/actions_dropdown', locals:{question: @question})
+      - if current_user and current_user.author_of? @question
+        span.pull-right = render(partial:'shared/actions_dropdown', locals:{item_path: @question})
   .panel-body
     .row
       .col-xs-9
@@ -26,8 +26,8 @@
           tr.answer
             td width="5%" =i
             td width="60%" = answer.content
-            - if current_user == answer.user
-              td width="20"  = render(partial:'answers/actions_dropdown', locals:{answer:answer})
+            - if current_user and current_user.author_of? answer
+              td width="20"  = render partial:'shared/actions_dropdown', locals:{item_path: answer_path(answer)}
               td.text-right width="15%" = answer.user.email
             - else
               td
