@@ -10,8 +10,7 @@ class AnswersController < ApplicationController
       flash[:notice] = 'Your answer successfully created.'
       redirect_to @question
     else
-      flash[:error] = @answer.errors.full_messages.join(';')
-      redirect_to @question
+      render :new
     end
   end
 

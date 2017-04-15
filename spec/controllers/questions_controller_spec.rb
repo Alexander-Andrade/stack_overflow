@@ -74,4 +74,50 @@ RSpec.describe QuestionsController, type: :controller do
     end
   end
 
+  describe 'DELETE #destroy' do
+    sign_in_user
+
+    it 'deletes question' do
+      expect { delete :destroy, id: question }.to change(Question, :count).by(-1)
+    end
+
+    it 'redirect to questions view' do
+      delete :destroy, id: question
+      expect(response).to redirect_to questions_path
+    end
+  end
+
+  describe 'DELETE #destroy' do
+    sign_in_user
+
+    context 'registered user is author' do
+
+      it 'registered user is an current user' do
+        expect(subject.current_user).to eq @user
+      end
+
+      it 'deletes question' do
+        question = create(:question, user: @user)
+        expect { delete :destroy, params: { id: question } }.to change(Question, :count).by(-1)
+      end
+
+      it 'redirect to questions index' do
+        delete :destroy, params: { id: question }
+        expect(response).to redirect_to questions_path
+      end
+    end
+
+    context "user isn't author" do
+      it 'not deletes question' do
+        question = create(:question, user: user)
+        expect { delete :destroy, params: { id: question } }.to_not change(Question, :count)
+      end
+
+      it 'creates error message' do
+        delete :destroy, params: { id: question }
+        expect(flash[:error]).to eq "You can't delete another question."
+      end
+    end
+  end
+
 end

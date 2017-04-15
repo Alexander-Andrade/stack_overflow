@@ -42,9 +42,42 @@ RSpec.describe AnswersController, type: :controller do
         expect { post :create, params: { question_id: question, answer: attributes_for(:invalid_question) } }.to_not change(Answer, :count)
       end
 
-      it 'redirects to question' do
+      it 'renders new answer view' do
         post :create, params: { question_id: question, answer: attributes_for(:invalid_question) }
-        expect(response).to redirect_to question
+        expect(response).to render_template(:new)
+      end
+    end
+  end
+
+  describe 'DELETE #destroy' do
+    sign_in_user
+
+    context 'registered user is author' do
+
+      it 'registered user is an current user' do
+        expect(subject.current_user).to eq @user
+      end
+
+      it 'deletes answer' do
+        answer = create(:answer, question: question, user: @user)
+        expect { delete :destroy, params: { id: answer } }.to change(Answer, :count).by(-1)
+      end
+
+      it 'redirect to question show' do
+        delete :destroy, params: { id: answer }
+        expect(response).to redirect_to question_path(question)
+      end
+    end
+
+    context "user isn't author" do
+      it 'not deletes answer' do
+        answer = create(:answer, question: question, user: user)
+        expect { delete :destroy, params: { id: answer } }.to_not change(Answer, :count)
+      end
+
+      it 'creates error message' do
+        delete :destroy, params: { id: answer }
+        expect(flash[:error]).to eq 'Your could not delete another answer.'
       end
     end
   end
