@@ -1,7 +1,8 @@
 Rails.application.routes.draw do
+  devise_for :users
   root 'questions#index'
 
-  resources :questions, only: [:index, :show, :new, :create] do
-    resources :answers, only: [:new, :create]
+  resources :questions, only: [:index, :show, :new, :create, :destroy] do
+    resources :answers, only: [:create, :destroy], shallow: true
   end
 end

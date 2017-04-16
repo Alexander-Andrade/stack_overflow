@@ -1,0 +1,9 @@
+.row
+  .col-md-10.col-md-offset-1
+    h3 New Answer
+    = form_for [question, answer] do |f|
+      = render 'shared/error_messages', object: f.object
+      = f.label :content, 'Text'
+      = f.text_area :content, class: 'form-control'
+      = f.submit 'Create', class: 'btn btn-primary'
+
