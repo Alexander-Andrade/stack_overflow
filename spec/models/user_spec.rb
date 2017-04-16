@@ -20,14 +20,21 @@ RSpec.describe User, type: :model do
     let(:own_answer) { create(:answer, question: own_question, user: user) }
     let(:another_answer) { create(:answer, question: another_question, user: another_user) }
 
-    it 'returns true if arg belongs to user' do
+    it 'returns true if question belongs to user' do
       expect(user.author_of?(own_question)).to eq true
+    end
+
+    it 'returns true if answer belongs to user' do
       expect(user.author_of?(own_answer)).to eq true
     end
 
-    it 'returns false if arg belongs to another user' do
+    it 'returns false if question belongs to another user' do
       expect(user.author_of?(another_question)).to eq false
+    end
+
+    it 'returns false if answer belongs to another user' do
       expect(user.author_of?(another_answer)).to eq false
     end
+
   end
 end

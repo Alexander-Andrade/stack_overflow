@@ -54,10 +54,6 @@ RSpec.describe AnswersController, type: :controller do
 
     context 'registered user is author' do
 
-      it 'registered user is an current user' do
-        expect(subject.current_user).to eq @user
-      end
-
       it 'deletes answer' do
         answer = create(:answer, question: question, user: @user)
         expect { delete :destroy, params: { id: answer } }.to change(Answer, :count).by(-1)

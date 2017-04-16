@@ -92,10 +92,6 @@ RSpec.describe QuestionsController, type: :controller do
 
     context 'registered user is author' do
 
-      it 'registered user is an current user' do
-        expect(subject.current_user).to eq @user
-      end
-
       it 'deletes question' do
         question = create(:question, user: @user)
         expect { delete :destroy, params: { id: question } }.to change(Question, :count).by(-1)
