@@ -16,12 +16,12 @@
   table.table
     thead
       tr
-        th #
         th Answer
         th Actions
         th.text-right Email
     tbody.answers
-      = render 'answers'
+      - if @question.answers.any?
+        = render @question.answers
 
 = render partial:'answers/form', locals:{question: @question, answer: @question.answers.build}
 
