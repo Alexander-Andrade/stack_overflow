@@ -78,7 +78,7 @@ RSpec.describe QuestionsController, type: :controller do
     sign_in_user
 
     it 'deletes question' do
-      expect { delete :destroy, id: question }.to change(Question, :count).by(-1)
+      expect { delete :destroy, id: question }.to change(Question, :count).by(1)
     end
 
     it 'redirect to questions view' do

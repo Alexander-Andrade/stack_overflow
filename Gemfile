@@ -38,6 +38,7 @@ gem 'jbuilder', '~> 2.5'
 
 gem 'slim-rails'
 gem 'devise'
+gem 'bootstrap-material-design', '~> 0.2.2'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -56,6 +57,8 @@ group :test do
   gem 'rubocop', require: false
   gem 'capybara'
   gem 'launchy'
+  gem 'selenium-webdriver','~> 3.4.0'
+  gem 'database_cleaner'
 end
 
 group :development do

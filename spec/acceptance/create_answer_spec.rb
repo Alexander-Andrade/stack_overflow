@@ -9,7 +9,7 @@ feature 'User,while viewing the question, can write a response to it', %q{
   given(:user) { create(:user) }
   given(:question) { create(:question, user: user) }
 
-  scenario 'Authenticated user creates answer' do
+  scenario 'Authenticated user creates answer', js: true do
     sign_in(user)
 
     visit question_path(question)
@@ -20,17 +20,7 @@ feature 'User,while viewing the question, can write a response to it', %q{
     expect(page).to have_content 'Test Answer'
   end
 
-  scenario 'Authenticated user creates answer' do
-    sign_in(user)
-
-    visit question_path(question)
-
-    fill_in 'Text', with: 'Test Answer'
-    click_on 'Create'
-    expect(page).to have_content 'Your answer successfully created.'
-  end
-
-  scenario 'Authenticated user creates invalid answer' do
+  scenario 'Authenticated user creates invalid answer', js: true do
     sign_in(user)
 
     visit question_path(question)
@@ -40,7 +30,7 @@ feature 'User,while viewing the question, can write a response to it', %q{
     expect(page).to have_content "Content can't be blank"
   end
 
-  scenario 'Visitor(not user) wants to create answer' do
+  scenario 'Visitor(not user) wants to create answer', js: true do
     visit question_path(question)
     fill_in 'Text', with: ''
     click_on 'Create'
