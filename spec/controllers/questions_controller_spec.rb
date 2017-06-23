@@ -78,11 +78,11 @@ RSpec.describe QuestionsController, type: :controller do
     sign_in_user
 
     it 'deletes question' do
-      expect { delete :destroy, id: question }.to change(Question, :count).by(1)
+      expect { delete :destroy, params: { id: question } }.to change(Question, :count).by(1)
     end
 
     it 'redirect to questions view' do
-      delete :destroy, id: question
+      delete :destroy, params: {id: question }
       expect(response).to redirect_to questions_path
     end
   end
@@ -114,6 +114,28 @@ RSpec.describe QuestionsController, type: :controller do
         expect(flash[:error]).to eq "You can't delete another question."
       end
     end
+  end
+
+  describe 'PATCH #update' do
+    sign_in_user
+
+    it 'assigns requested question to @question' do
+      patch :update, params: { id: question, question: attributes_for(:question), format: :js }
+      expect(assigns(:question)).to eq question
+    end
+
+    it 'changes question attributes' do
+      patch :update, params: { id: question, question: { title: 'title 123', body: 'body 123'}, format: :js }
+      question.reload
+      expect(question.title).to eq 'title 123'
+      expect(question.body).to eq 'body 123'
+    end
+
+    it 'renders update template' do
+      patch :update, params: { id: question, question: attributes_for(:question), format: :js }
+      expect(response).to render_template :update
+    end
+
   end
 
 end

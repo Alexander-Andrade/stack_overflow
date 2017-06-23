@@ -1,9 +1,13 @@
 class QuestionsController < ApplicationController
-  before_action :load_question ,only: [:show, :destroy]
-  before_action :authenticate_user!, only: [:new, :create]
+  before_action :load_question ,only: [:show, :update, :destroy]
+  before_action :authenticate_user!, only: [:new, :update, :create]
 
   def index
     @questions = Question.all
+  end
+
+  def update
+    @question.update_attributes(question_params)
   end
 
   def show

@@ -2,7 +2,11 @@ Rails.application.routes.draw do
   devise_for :users
   root 'questions#index'
 
-  resources :questions, only: [:index, :show, :new, :create, :destroy] do
-    resources :answers, only: [:create, :destroy], shallow: true
+  resources :questions do
+    resources :answers,  shallow: true do
+      member do
+        post :set_best
+      end
+    end
   end
 end

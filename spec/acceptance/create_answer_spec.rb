@@ -1,4 +1,4 @@
-require 'rails_helper'
+require_relative 'acceptance_helper'
 
 feature 'User,while viewing the question, can write a response to it', %q{
   In order to answer a question
@@ -16,7 +16,6 @@ feature 'User,while viewing the question, can write a response to it', %q{
 
     fill_in 'Text', with: 'Test Answer'
     click_on 'Create'
-    expect(page).to have_content 'Your answer successfully created.'
     expect(page).to have_content 'Test Answer'
   end
 

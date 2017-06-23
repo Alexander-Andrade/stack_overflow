@@ -1,0 +1,23 @@
+.card.blue-grey.darken-1.question id=("question-#{question.id}")
+  .card-content.white-text
+    .row
+      .col.s1
+        .chip
+          | Q
+      .col.s7
+        span.card-title = question.title
+      .col.s4
+        .row
+          .col.s12
+            .right-align = question.user.email
+          .col.s12
+            .right-align = question.created_at.strftime('%c')
+    .row
+      .col.s1
+      .col.s11
+        = question.body
+    = render partial:'questions/edit', locals:{ question: question }
+  - if current_user && current_user.author_of?(question)
+    .card-action.question-actions
+      = link_to 'Edit', '', class: 'edit-question-link', data: { question_id: question.id }
+      = link_to 'Delete' , question, method: :delete
