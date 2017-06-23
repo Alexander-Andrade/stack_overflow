@@ -1,4 +1,4 @@
-require 'rails_helper'
+require_relative 'acceptance_helper'
 
 feature 'User can delete his own answer', %q{
   In order to delete answer
@@ -10,7 +10,7 @@ feature 'User can delete his own answer', %q{
   given(:question) { create(:question, user: user)}
   given!(:answer) { create(:answer, user: user, question: question) }
 
-  scenario 'Registered user deletes his own answer' do
+  scenario 'Registered user deletes his own answer', js: true do
 
     sign_in(user)
 
@@ -21,12 +21,11 @@ feature 'User can delete his own answer', %q{
     within ".answer" do
       click_on 'Delete'
     end
-    expect(page).to have_content 'Your answer successfully deleted.'
     expect(page).to_not have_content answer.content
     expect(current_path).to eq question_path(question)
   end
 
-  scenario 'Another user tries to delete question' do
+  scenario 'Another user tries to delete answer', js: true do
 
     sign_in(user2)
 
@@ -37,10 +36,12 @@ feature 'User can delete his own answer', %q{
 
   end
 
-  scenario 'Visitor tries to delete question' do
+  scenario 'Visitor tries to delete answer', js: true do
 
     visit question_path(question)
-    expect(page).to_not have_link 'Delete'
+    within ".answer" do
+      expect(page).to_not have_link 'Delete'
+    end
   end
 
 end

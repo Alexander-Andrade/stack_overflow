@@ -1,12 +1,25 @@
 class AnswersController < ApplicationController
   before_action :authenticate_user!
-  before_action :find_question, only: [:new, :create]
-  before_action :find_answer, only: [:destroy]
+  before_action :find_question, only: [:create]
+  before_action :find_answer, only: [:update, :set_best, :destroy]
 
   def create
     @answer = @question.answers.build(answer_params)
     @answer.user = current_user
-    @answer.save!
+    @answer.save
+  end
+
+  def update
+    @answer.update_attributes(answer_params)
+    @question = @answer.question
+  end
+
+  def set_best
+    @question = @answer.question
+    if current_user.author_of? @question
+      BestAnswerService.new(@answer).set_answer_as_best
+      @answers = @question.answers.all
+    end
   end
 
   def destroy
@@ -16,7 +29,6 @@ class AnswersController < ApplicationController
     else
       flash[:error] = 'Your could not delete another answer.'
     end
-    redirect_to @answer.question
   end
 
   private

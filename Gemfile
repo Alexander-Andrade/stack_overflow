@@ -13,7 +13,6 @@ gem 'pg', '~> 0.18'
 # Use Puma as the app server
 gem 'puma', '~> 3.0'
 # Use SCSS for stylesheets
-gem 'bootstrap-sass'
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
@@ -38,7 +37,9 @@ gem 'jbuilder', '~> 2.5'
 
 gem 'slim-rails'
 gem 'devise'
-gem 'bootstrap-material-design', '~> 0.2.2'
+gem 'materialize-sass'
+gem 'material_icons'
+gem 'font-awesome-rails'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -57,8 +58,8 @@ group :test do
   gem 'rubocop', require: false
   gem 'capybara'
   gem 'launchy'
-  gem 'selenium-webdriver','~> 3.4.0'
   gem 'database_cleaner'
+  gem 'capybara-webkit'
 end
 
 group :development do

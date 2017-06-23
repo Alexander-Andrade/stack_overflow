@@ -1,0 +1,6 @@
+= form_for question, remote: true, html: { id: "edit-question-#{question.id}", class: 'edit_question' } do |f|
+  = f.label :title, 'Title'
+  = f.text_field :title, class: 'form-control'
+  = f.label :body, 'Body'
+  = f.text_area :body, class: 'form-control'
+  = f.submit 'Update', class: 'btn'

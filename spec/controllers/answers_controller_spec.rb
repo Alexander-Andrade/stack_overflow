@@ -43,26 +43,47 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'deletes answer' do
         answer = create(:answer, question: question, user: @user)
-        expect { delete :destroy, params: { id: answer } }.to change(Answer, :count).by(-1)
+        expect { delete :destroy, params: { id: answer }, format: :js }.to change(Answer, :count).by(-1)
       end
 
-      it 'redirect to question show' do
-        delete :destroy, params: { id: answer }
-        expect(response).to redirect_to question_path(question)
+      it 'render destroy.js.erb' do
+        delete :destroy, params: { id: answer }, format: :js
+        expect(response).to render_template(:destroy)
       end
     end
 
     context "user isn't author" do
       it 'not deletes answer' do
         answer = create(:answer, question: question, user: user)
-        expect { delete :destroy, params: { id: answer } }.to_not change(Answer, :count)
+        expect { delete :destroy, params: { id: answer }, format: :js }.to_not change(Answer, :count)
       end
 
       it 'creates error message' do
-        delete :destroy, params: { id: answer }
+        delete :destroy, params: { id: answer }, format: :js
         expect(flash[:error]).to eq 'Your could not delete another answer.'
       end
     end
+  end
+
+  describe 'PATCH #update' do
+    sign_in_user
+
+    it 'assigns requested answer to @answer' do
+      patch :update, params: { id: answer, answer: attributes_for(:answer), format: :js }
+      expect(assigns(:answer)).to eq answer
+    end
+
+    it 'changes answer attributes' do
+      patch :update, params: { id: answer, answer: { content: 'answer content 123'}, format: :js }
+      answer.reload
+      expect(answer.content).to eq 'answer content 123'
+    end
+
+    it 'renders update template' do
+      patch :update, params: { id: answer, answer: attributes_for(:answer), format: :js }
+      expect(response).to render_template :update
+    end
+
   end
 
 end
