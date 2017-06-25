@@ -138,6 +138,7 @@ RSpec.describe AnswersController, type: :controller do
         answer.reload
         expect(answer).to_not be_best
       end
+
     end
 
   end

@@ -146,6 +146,7 @@ RSpec.describe QuestionsController, type: :controller do
         expect(question.title).to_not eq 'title 123'
         expect(question.body).to_not eq 'body 123'
       end
+
     end
 
   end

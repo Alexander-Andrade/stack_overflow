@@ -16,6 +16,7 @@ RSpec.describe Answer, type: :model do
   let(:another_answer) { create(:answer, question: question, user: user) }
 
   context 'method best?' do
+
     it 'returns true if the answer is best' do
       answer.set_as_best
       expect(answer).to be_best
