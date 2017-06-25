@@ -7,7 +7,9 @@ class QuestionsController < ApplicationController
   end
 
   def update
-    @question.update_attributes(question_params)
+    if current_user.author_of? @question
+      @question.update_attributes(question_params)
+    end
   end
 
   def show

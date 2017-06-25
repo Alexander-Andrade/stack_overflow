@@ -24,14 +24,14 @@ RSpec.describe Question, type: :model do
     end
 
     it 'has the best answer, after it is set' do
-      BestAnswerService.new(answer).set_answer_as_best
+      answer.set_as_best
       expect(question.has_best_answer?).to eq true
     end
   end
 
   context 'method best_answer' do
     it 'returns answer with true best field ' do
-      BestAnswerService.new(answer).set_answer_as_best
+      answer.set_as_best
       expect(question.best_answer).to eq answer
     end
   end

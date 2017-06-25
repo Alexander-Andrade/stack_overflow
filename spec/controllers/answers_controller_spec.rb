@@ -68,20 +68,76 @@ RSpec.describe AnswersController, type: :controller do
   describe 'PATCH #update' do
     sign_in_user
 
-    it 'assigns requested answer to @answer' do
-      patch :update, params: { id: answer, answer: attributes_for(:answer), format: :js }
-      expect(assigns(:answer)).to eq answer
+    context 'author' do
+      it 'assigns requested answer to @answer' do
+        patch :update, params: { id: answer, answer: attributes_for(:answer), format: :js }
+        expect(assigns(:answer)).to eq answer
+      end
+
+      it 'changes answer attributes' do
+        answer = create(:answer, question: question, user: @user)
+        patch :update, params: { id: answer, answer: { content: 'answer content 123'}, format: :js }
+        answer.reload
+        expect(answer.content).to eq 'answer content 123'
+      end
+
+      it 'renders update template' do
+        patch :update, params: { id: answer, answer: attributes_for(:answer), format: :js }
+        expect(response).to render_template :update
+      end
     end
 
-    it 'changes answer attributes' do
-      patch :update, params: { id: answer, answer: { content: 'answer content 123'}, format: :js }
-      answer.reload
-      expect(answer.content).to eq 'answer content 123'
+    context 'not author' do
+      it 'not changes answer attributes' do
+        patch :update, params: { id: answer, answer: { content: 'answer content 123'}, format: :js }
+        answer.reload
+        expect(answer.content).to_not eq 'answer content 123'
+      end
     end
 
-    it 'renders update template' do
-      patch :update, params: { id: answer, answer: attributes_for(:answer), format: :js }
-      expect(response).to render_template :update
+  end
+
+  describe 'POST #set_best' do
+    sign_in_user
+
+    context 'authenticated user' do
+
+      it 'assigns reordered answer list to @answers' do
+        question = create(:question, user: @user)
+        answer = create(:answer, question: question, user: @user)
+        post :set_best, params: { id: answer, format: :js }
+        expect(assigns(:answers)).to eq question.answers.all
+      end
+
+      it 'sets answer as best if it is question owner' do
+        question = create(:question, user: @user)
+        answer = create(:answer, question: question, user: @user)
+        post :set_best, params: { id: answer, format: :js }
+        answer.reload
+        expect(answer).to be_best
+      end
+
+      it 'sets not answer as best if it is not question owner' do
+        answer = create(:answer, question: question, user: @user)
+        post :set_best, params: { id: answer, format: :js }
+        answer.reload
+        expect(answer).to_not be_best
+      end
+
+      it 'renders set_best template' do
+        answer = create(:answer, question: question, user: @user)
+        post :set_best, params: { id: answer, format: :js }
+        expect(response).to render_template :set_best
+      end
+
+    end
+
+    context 'not authenticated user' do
+      it 'not sets answer as best' do
+        post :set_best, params: { id: answer, format: :js }
+        answer.reload
+        expect(answer).to_not be_best
+      end
     end
 
   end

@@ -10,14 +10,16 @@ class AnswersController < ApplicationController
   end
 
   def update
-    @answer.update_attributes(answer_params)
-    @question = @answer.question
+    if current_user.author_of? @answer
+      @answer.update_attributes(answer_params)
+      @question = @answer.question
+    end
   end
 
   def set_best
     @question = @answer.question
     if current_user.author_of? @question
-      BestAnswerService.new(@answer).set_answer_as_best
+      @answer.set_as_best
       @answers = @question.answers.all
     end
   end

@@ -119,21 +119,33 @@ RSpec.describe QuestionsController, type: :controller do
   describe 'PATCH #update' do
     sign_in_user
 
-    it 'assigns requested question to @question' do
-      patch :update, params: { id: question, question: attributes_for(:question), format: :js }
-      expect(assigns(:question)).to eq question
+    context 'user is author' do
+      it 'assigns requested question to @question' do
+        patch :update, params: { id: question, question: attributes_for(:question), format: :js }
+        expect(assigns(:question)).to eq question
+      end
+
+      it 'changes question attributes' do
+        question = create(:question, user: @user)
+        patch :update, params: { id: question, question: { title: 'title 123', body: 'body 123'}, format: :js }
+        question.reload
+        expect(question.title).to eq 'title 123'
+        expect(question.body).to eq 'body 123'
+      end
+
+      it 'renders update template' do
+        patch :update, params: { id: question, question: attributes_for(:question), format: :js }
+        expect(response).to render_template :update
+      end
     end
 
-    it 'changes question attributes' do
-      patch :update, params: { id: question, question: { title: 'title 123', body: 'body 123'}, format: :js }
-      question.reload
-      expect(question.title).to eq 'title 123'
-      expect(question.body).to eq 'body 123'
-    end
-
-    it 'renders update template' do
-      patch :update, params: { id: question, question: attributes_for(:question), format: :js }
-      expect(response).to render_template :update
+    context 'user is not author' do
+      it 'not changes question attributes' do
+        patch :update, params: { id: question, question: { title: 'title 123', body: 'body 123'}, format: :js }
+        question.reload
+        expect(question.title).to_not eq 'title 123'
+        expect(question.body).to_not eq 'body 123'
+      end
     end
 
   end

@@ -16,16 +16,29 @@ RSpec.describe Answer, type: :model do
   let(:another_answer) { create(:answer, question: question, user: user) }
 
   context 'method best?' do
-
     it 'returns true if the answer is best' do
-      BestAnswerService.new(answer).set_answer_as_best
+      answer.set_as_best
       expect(answer).to be_best
     end
 
     it 'has the best answer, after it is set' do
-      BestAnswerService.new(another_answer).set_answer_as_best
+      another_answer.set_as_best
       expect(answer).to_not be_best
     end
+  end
+
+  context 'method set_as_best' do
+    before do
+      answer.set_as_best
+    end
+    it 'sets answer as the best' do
+      expect(answer).to be_best
+    end
+
+    it 'another answer is not the best' do
+      expect(another_answer).to_not be_best
+    end
+
   end
 
 end
