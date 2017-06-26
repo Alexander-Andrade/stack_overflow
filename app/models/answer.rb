@@ -6,10 +6,6 @@ class Answer < ApplicationRecord
 
   validates :content, presence: true
 
-  def best?
-    best
-  end
-
   def set_as_best
     Answer.transaction do
       if question.has_best_answer?
