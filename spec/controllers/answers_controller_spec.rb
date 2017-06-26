@@ -43,26 +43,104 @@ RSpec.describe AnswersController, type: :controller do
 
       it 'deletes answer' do
         answer = create(:answer, question: question, user: @user)
-        expect { delete :destroy, params: { id: answer } }.to change(Answer, :count).by(-1)
+        expect { delete :destroy, params: { id: answer }, format: :js }.to change(Answer, :count).by(-1)
       end
 
-      it 'redirect to question show' do
-        delete :destroy, params: { id: answer }
-        expect(response).to redirect_to question_path(question)
+      it 'render destroy.js.erb' do
+        delete :destroy, params: { id: answer }, format: :js
+        expect(response).to render_template(:destroy)
       end
     end
 
     context "user isn't author" do
       it 'not deletes answer' do
         answer = create(:answer, question: question, user: user)
-        expect { delete :destroy, params: { id: answer } }.to_not change(Answer, :count)
+        expect { delete :destroy, params: { id: answer }, format: :js }.to_not change(Answer, :count)
       end
 
       it 'creates error message' do
-        delete :destroy, params: { id: answer }
+        delete :destroy, params: { id: answer }, format: :js
         expect(flash[:error]).to eq 'Your could not delete another answer.'
       end
     end
+  end
+
+  describe 'PATCH #update' do
+    sign_in_user
+
+    context 'author' do
+      it 'assigns requested answer to @answer' do
+        patch :update, params: { id: answer, answer: attributes_for(:answer), format: :js }
+        expect(assigns(:answer)).to eq answer
+      end
+
+      it 'changes answer attributes' do
+        answer = create(:answer, question: question, user: @user)
+        patch :update, params: { id: answer, answer: { content: 'answer content 123'}, format: :js }
+        answer.reload
+        expect(answer.content).to eq 'answer content 123'
+      end
+
+      it 'renders update template' do
+        patch :update, params: { id: answer, answer: attributes_for(:answer), format: :js }
+        expect(response).to render_template :update
+      end
+    end
+
+    context 'not author' do
+      it 'not changes answer attributes' do
+        patch :update, params: { id: answer, answer: { content: 'answer content 123'}, format: :js }
+        answer.reload
+        expect(answer.content).to_not eq 'answer content 123'
+      end
+    end
+
+  end
+
+  describe 'POST #set_best' do
+    sign_in_user
+
+    context 'authenticated user' do
+
+      it 'assigns reordered answer list to @answers' do
+        question = create(:question, user: @user)
+        answer = create(:answer, question: question, user: @user)
+        post :set_best, params: { id: answer, format: :js }
+        expect(assigns(:answers)).to eq question.answers.all
+      end
+
+      it 'sets answer as best if it is question owner' do
+        question = create(:question, user: @user)
+        answer = create(:answer, question: question, user: @user)
+        post :set_best, params: { id: answer, format: :js }
+        answer.reload
+        expect(answer).to be_best
+      end
+
+      it 'sets not answer as best if it is not question owner' do
+        answer = create(:answer, question: question, user: @user)
+        post :set_best, params: { id: answer, format: :js }
+        answer.reload
+        expect(answer).to_not be_best
+      end
+
+      it 'renders set_best template' do
+        answer = create(:answer, question: question, user: @user)
+        post :set_best, params: { id: answer, format: :js }
+        expect(response).to render_template :set_best
+      end
+
+    end
+
+    context 'not authenticated user' do
+      it 'not sets answer as best' do
+        post :set_best, params: { id: answer, format: :js }
+        answer.reload
+        expect(answer).to_not be_best
+      end
+
+    end
+
   end
 
 end

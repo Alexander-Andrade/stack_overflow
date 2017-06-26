@@ -4,6 +4,7 @@
     = form_for [question, answer], remote: true do |f|
       = render 'shared/error_messages', object: f.object
       = f.label :content, 'Text'
-      = f.text_area :content, class: 'form-control', id: 'answer_body'
+      .answer-errors.card-pane.red
+      = f.text_area :content, class: 'form-control'
       = f.submit 'Create', class: 'btn btn-primary'
 

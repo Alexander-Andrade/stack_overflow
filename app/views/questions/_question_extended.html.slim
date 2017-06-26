@@ -1,0 +1,5 @@
+= render partial:'questions/question_card', locals: { question: question }
+
+.answers
+  - if question.answers.any?
+    = render question.answers

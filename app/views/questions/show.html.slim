@@ -1,27 +1,6 @@
 = render 'shared/flash_message'
 
-.panel.panel-primary
-  .panel-heading
-    .panel-title
-      = @question.title
-      - if current_user && current_user.author_of?(@question)
-        span.pull-right = render partial:'shared/actions_dropdown', locals:{item_path: @question}
-  .panel-body
-    .row
-      .col-xs-9
-        = @question.body
-      .col-xs-3.text-right
-        = @question.user.email
-
-  table.table
-    thead
-      tr
-        th Answer
-        th Actions
-        th.text-right Email
-    tbody.answers
-      - if @question.answers.any?
-        = render @question.answers
+= render partial:'questions/question_extended', locals:{ question: @question }
 
 = render partial:'answers/form', locals:{question: @question, answer: @question.answers.build}
 
