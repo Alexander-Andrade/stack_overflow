@@ -6,5 +6,8 @@
       = f.label :content, 'Text'
       .answer-errors.card-pane.red
       = f.text_area :content, class: 'form-control'
+      = f.fields_for :attachments do |a|
+        = a.label :file, 'File'
+        = a.file_field :file
       = f.submit 'Create', class: 'btn btn-primary'
 

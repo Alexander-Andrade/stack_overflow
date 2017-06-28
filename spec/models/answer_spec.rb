@@ -4,6 +4,8 @@ RSpec.describe Answer, type: :model do
   context 'assotiations' do
     it { should belong_to(:question) }
     it { should belong_to(:user) }
+    it { should have_many(:attachments)}
+    it { should accept_nested_attributes_for :attachments}
   end
 
   context 'validations' do

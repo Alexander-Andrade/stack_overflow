@@ -1,22 +1,23 @@
-.card.answer id=("answer-#{answer.id}")
-  .card-content
-    .row
-      .col.s1
-        - if answer.best
-          .chip
-            | Best
-      .col.s7
-        span.card-content = answer.content
-        = render partial:'answers/edit', locals: {answer: answer}
-      .col.s4
-        .row
-          .col.s12
-            .right-align = answer.user.email
-          .col.s12
-            .right-align = answer.created_at.strftime('%c')
-  - if current_user && current_user.author_of?(answer)
-    .card-action.answer-actions
-      = link_to 'Edit', '', class: 'edit-answer-link', data: { answer_id: answer.id }
-      - if !answer.best && current_user.author_of?(answer.question)
-        = link_to 'Mark Best', set_best_answer_path(answer),  method: :post, remote: true
-      = link_to 'Delete' , answer_path(answer), remote: true, method: :delete
+- if answer.persisted?
+  .card.answer id=("answer-#{answer.id}")
+    .card-content
+      .row
+        .col.s1
+          - if answer.best
+            .chip
+              | Best
+        .col.s7
+          span.card-content = answer.content
+          = render partial:'answers/edit', locals: {answer: answer}
+        .col.s4
+          .row
+            .col.s12
+              .right-align = answer.user.email
+            .col.s12
+              .right-align = answer.created_at.strftime('%c')
+    - if current_user && current_user.author_of?(answer)
+      .card-action.answer-actions
+        = link_to 'Edit', '', class: 'edit-answer-link', data: { answer_id: answer.id }
+        - if !answer.best && current_user.author_of?(answer.question)
+          = link_to 'Mark Best', set_best_answer_path(answer),  method: :post, remote: true
+        = link_to 'Delete' , answer_path(answer), remote: true, method: :delete

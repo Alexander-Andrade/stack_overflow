@@ -3,6 +3,9 @@ class Answer < ApplicationRecord
 
   belongs_to :user
   belongs_to :question
+  has_many :attachments, as: :attachable
+
+  accepts_nested_attributes_for :attachments
 
   validates :content, presence: true
 
