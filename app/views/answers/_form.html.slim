@@ -1,4 +1,4 @@
-.row
+.row.new-answer
   .col-md-10.col-md-offset-1
     h3 New Answer
     = form_for [question, answer], remote: true do |f|
@@ -7,7 +7,7 @@
       .answer-errors.card-pane.red
       = f.text_area :content, class: 'form-control'
       = f.fields_for :attachments do |a|
-        = a.label :file, 'File'
-        = a.file_field :file
+        = render 'attachments/attachment_fields', f: a
+        = link_to_add_association 'Add File', f, :attachments, partial: 'attachments/attachment_fields'
       = f.submit 'Create', class: 'btn btn-primary'
 

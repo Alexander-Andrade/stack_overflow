@@ -3,7 +3,7 @@ class Answer < ApplicationRecord
 
   belongs_to :user
   belongs_to :question
-  has_many :attachments, as: :attachable
+  has_many :attachments, as: :attachable, inverse_of: :attachable
 
   accepts_nested_attributes_for :attachments
 

@@ -3,7 +3,7 @@ class FileUploader < CarrierWave::Uploader::Base
   # Include RMagick or MiniMagick support:
   # include CarrierWave::RMagick
   # include CarrierWave::MiniMagick
-
+  delegate :filename, to: :file
   # Choose what kind of storage to use for this uploader:
   storage :file
   # storage :fog
