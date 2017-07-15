@@ -6,8 +6,10 @@
       = f.label :content, 'Text'
       .answer-errors.card-pane.red
       = f.text_area :content, class: 'form-control'
-      = f.fields_for :attachments do |a|
-        = render 'attachments/attachment_fields', f: a
-        = link_to_add_association 'Add File', f, :attachments, partial: 'attachments/attachment_fields'
-      = f.submit 'Create', class: 'btn btn-primary'
+      .attachments
+        = f.fields_for :attachments do |a|
+          = render 'attachments/attachment_fields', f: a
+        .links
+          = link_to_add_association 'Add File', f, :attachments, partial: 'attachments/attachment_fields'
+        = f.submit 'Create', class: 'btn btn-primary'
 

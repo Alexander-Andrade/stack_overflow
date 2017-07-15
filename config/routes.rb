@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'attachments/destroy'
+
   devise_for :users
   root 'questions#index'
 
@@ -9,4 +11,6 @@ Rails.application.routes.draw do
       end
     end
   end
+
+  resources :attachments, only: [:destroy]
 end

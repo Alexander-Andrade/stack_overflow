@@ -15,10 +15,8 @@
               .right-align = answer.user.email
             .col.s12
               .right-align = answer.created_at.strftime('%c')
-      .row
-        - answer.attachments.each do |a|
-          .col.s12
-            = link_to a.file.filename, a.file.url
+      = render answer.attachments
+
     - if current_user && current_user.author_of?(answer)
       .card-action.answer-actions
         = link_to 'Edit', '', class: 'edit-answer-link', data: { answer_id: answer.id }
