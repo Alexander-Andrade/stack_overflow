@@ -3,9 +3,9 @@ class Answer < ApplicationRecord
 
   belongs_to :user
   belongs_to :question
-  has_many :attachments, as: :attachable, inverse_of: :attachable
+  has_many :attachments, as: :attachable, inverse_of: :attachable, dependent: :destroy
 
-  accepts_nested_attributes_for :attachments
+  accepts_nested_attributes_for :attachments, reject_if: :all_blank
 
   validates :content, presence: true
 

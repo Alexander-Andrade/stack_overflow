@@ -4,7 +4,7 @@ RSpec.describe AttachmentsController, type: :controller do
 
   let!(:user) { create(:user) }
   let!(:question) { create(:question, user: user) }
-  let(:attachment) { create(:attachment, attachable: question) }
+  let!(:attachment) { create(:attachment, attachable: question) }
 
   describe 'DELETE #destroy' do
 
@@ -13,6 +13,11 @@ RSpec.describe AttachmentsController, type: :controller do
 
       it 'deletes attachment' do
         expect { delete :destroy, params: { id: attachment, format: :js } }.to change(question.attachments, :count).by(-1)
+      end
+
+      it 'renders destroy.js.erb' do
+        delete :destroy, params: { id: attachment, format: :js }
+        expect(response).to render_template(:destroy)
       end
 
     end
