@@ -8,4 +8,9 @@
       = f.text_field :title, class: 'form-control'
       = f.label :body, 'Body'
       = f.text_area :body, class: 'form-control'
-      = f.submit 'Create', class: 'btn btn-primary'
+      .attachments
+        = f.fields_for :attachments do |a|
+          = render 'attachments/attachment_fields', f: a
+        .links
+          = link_to_add_association 'Add File', f, :attachments, partial: 'attachments/attachment_fields'
+        = f.submit 'Create', class: 'btn btn-primary'

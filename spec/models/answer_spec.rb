@@ -4,6 +4,8 @@ RSpec.describe Answer, type: :model do
   context 'assotiations' do
     it { should belong_to(:question) }
     it { should belong_to(:user) }
+    it { should have_many(:attachments).dependent(:destroy)}
+    it { should accept_nested_attributes_for :attachments}
   end
 
   context 'validations' do
@@ -14,19 +16,6 @@ RSpec.describe Answer, type: :model do
   let(:question) { create(:question, user: user) }
   let(:answer) { create(:answer, question: question, user: user) }
   let(:another_answer) { create(:answer, question: question, user: user) }
-
-  context 'method best?' do
-
-    it 'returns true if the answer is best' do
-      answer.set_as_best
-      expect(answer).to be_best
-    end
-
-    it 'has the best answer, after it is set' do
-      another_answer.set_as_best
-      expect(answer).to_not be_best
-    end
-  end
 
   context 'method set_as_best' do
     before do

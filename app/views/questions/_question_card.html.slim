@@ -16,8 +16,10 @@
       .col.s1
       .col.s11
         = question.body
+    = render question.attachments
     = render partial:'questions/edit', locals:{ question: question }
   - if current_user && current_user.author_of?(question)
     .card-action.question-actions
       = link_to 'Edit', '', class: 'edit-question-link', data: { question_id: question.id }
       = link_to 'Delete' , question, method: :delete
+      = link_to 'Attachments', '', class: ''

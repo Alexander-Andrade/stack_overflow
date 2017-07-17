@@ -17,3 +17,4 @@
 .byebug_history
 config/database.yml
 .idea
+/public/uploads

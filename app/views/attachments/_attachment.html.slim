@@ -1,0 +1,6 @@
+.row id=("attachment-#{attachment.id}")
+  .col.s10
+    = link_to attachment.file.filename, attachment.file.url
+  - if user_signed_in? && current_user.author_of?(attachment.attachable)
+    .col.s2
+      = link_to 'Delete', attachment, method: :delete, remote: true
